@@ -116,6 +116,48 @@ export const productImageController=async(req,res)=>{
 
 }
 
+export const updateProductController=async(req,res)=>{
+    try {
+        const { name, description, price, category, quantity, shipping } = req.fields;
+        const { image } = req.files;
+        const {id}=req.params;
+
+        // Validation
+        if (!name) return res.status(400).send({ message: "Product name is required" });
+        if (!description) return res.status(400).send({ message: "Product description is required" });
+        if (!price) return res.status(400).send({ message: "Product price is required" });
+        if (!category) return res.status(400).send({ message: "Product category is required" });
+        if (!quantity) return res.status(400).send({ message: "Product quantity is required" });
+        if (image && image.size > 1000000) return res.status(400).send({ message: "Product image size should be less than 1 MB" });
+
+
+        // update product
+        const product = await productModel.findByIdAndUpdate(id,{...req.fields,slug:slugify(name)},{new:true})
+
+        if (image) {
+            product.image.data = fs.readFileSync(image.path);
+            product.image.contentType = image.type;
+        }
+
+        await product.save();
+
+        // Success response
+        res.status(201).send({
+            success: true,
+            message: "Product updated successfully",
+            product,
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({
+            success: false,
+            message: "Error in updating product",
+            error: error
+        });
+    }
+}
+
 export const deleteProductController=async(req,res)=>{
     try{
         const {id}=req.params;
