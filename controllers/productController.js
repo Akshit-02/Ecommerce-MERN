@@ -90,3 +90,28 @@ export const getSingleProductController=async(req,res)=>{
         })
     }
 }
+
+export const productImageController=async(req,res)=>{
+    try{
+        const {id}=req.params;
+        const product =await productModel.findById(id).select('image');
+        // Check if product and image data exist
+        if (product && product.image && product.image.data) {
+            res.set('Content-Type', product.image.contentType);
+            return res.status(200).send(product.image.data);
+        } else {
+            return res.status(404).send({
+                success: false,
+                message: "Product image not found",
+            });
+        }
+    }catch(error){
+        console.log(error)
+        res.status(500).send({
+            success:false,
+            message:"Error in getting product image",
+            error
+        })
+    }
+
+}
