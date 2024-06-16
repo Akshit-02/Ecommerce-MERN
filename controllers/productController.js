@@ -47,7 +47,7 @@ export const createProductController = async (req, res) => {
 
 export const listProductController=async(req,res)=>{
     try{
-        const products = await productModel.find({}).select('-image').limit(10).sort({ createdAt: -1 });
+        const products = await productModel.find({}).populate('category').select('-image').limit(10).sort({ createdAt: -1 });
         res.status(200).send({
             success:true,
             message:"All products",
@@ -62,5 +62,31 @@ export const listProductController=async(req,res)=>{
             message: "Error in listing product",
             error: error
         });
+    }
+}
+
+export const getSingleProductController=async(req,res)=>{
+    try{
+        const {slug}=req.params;
+        const product =await productModel.findOne({slug}).populate('category').select('-image');
+        if (!product) {
+            return res.status(404).send({
+                success: false,
+                message: "Product not found",
+            });
+        }
+        // Success response
+        res.status(200).send({
+            success:true,
+            message:"Single product details",
+            product
+        })
+    }catch(error){
+        console.log(error)
+        res.status(500).send({
+            success:false,
+            message:"Error in getting single product",
+            error
+        })
     }
 }

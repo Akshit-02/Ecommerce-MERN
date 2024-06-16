@@ -1,7 +1,7 @@
 import express from "express"
 import formidable from "express-formidable"
 import { isAdmin, requiredSignIn } from "../middlewares/authMiddleware.js";
-import { createProductController, listProductController } from "../controllers/productController.js";
+import { createProductController, getSingleProductController, listProductController } from "../controllers/productController.js";
 
 const router = express.Router();
 
@@ -11,5 +11,9 @@ router.post('/create-product',requiredSignIn,isAdmin,formidable(),createProductC
 
 // list products
 router.get('/list-product',listProductController)
+
+// get single products
+router.get('/get-product/:slug',getSingleProductController)
+
 
 export default router
