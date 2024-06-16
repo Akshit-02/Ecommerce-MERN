@@ -7,22 +7,21 @@ export const registerController= async(req,res)=>{
         const {name,email,password,phone,address}=req.body;
 
         // validations
-        if(!name){
-            return res.status(400).send({message:"Name is required"})
+        switch (true) {
+            case !name:
+                return res.status(400).send({ message: "Name is required" });
+            case !email:
+                return res.status(400).send({ message: "Email is required" });
+            case !password:
+                return res.status(400).send({ message: "Password is required" });
+            case !phone:
+                return res.status(400).send({ message: "Phone Number is required" });
+            case !address:
+                return res.status(400).send({ message: "Address is required" });
+            default:
+                break;
         }
-        if(!email){
-            return res.status(400).send({message:"Email is required"})
-        }
-        if(!password){
-            return res.status(400).send({message:"Password is required"})
-        }
-        if(!phone){
-            return res.status(400).send({message:"Phone Number is required"})
-        }
-        if(!address){
-            return res.status(400).send({message:"Address is required"})
-        }
-
+        
         //check user
         const existingUser=await usersModel.findOne({email})
         if(existingUser){

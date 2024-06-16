@@ -8,12 +8,22 @@ export const createProductController = async (req, res) => {
         const { image } = req.files;
 
         // Validation
-        if (!name) return res.status(400).send({ message: "Product name is required" });
-        if (!description) return res.status(400).send({ message: "Product description is required" });
-        if (!price) return res.status(400).send({ message: "Product price is required" });
-        if (!category) return res.status(400).send({ message: "Product category is required" });
-        if (!quantity) return res.status(400).send({ message: "Product quantity is required" });
-        if (image && image.size > 1000000) return res.status(400).send({ message: "Product image size should be less than 1 MB" });
+        switch (true) {
+            case !name:
+                return res.status(400).send({ message: "Product name is required" });
+            case !description:
+                return res.status(400).send({ message: "Product description is required" });
+            case !price:
+                return res.status(400).send({ message: "Product price is required" });
+            case !category:
+                return res.status(400).send({ message: "Product category is required" });
+            case !quantity:
+                return res.status(400).send({ message: "Product quantity is required" });
+            case image && image.size > 1000000:
+                return res.status(400).send({ message: "Product image size should be less than 1 MB" });
+            default:
+                break;
+        }
 
         // Create new product
         const product = new productModel({
@@ -123,13 +133,22 @@ export const updateProductController=async(req,res)=>{
         const {id}=req.params;
 
         // Validation
-        if (!name) return res.status(400).send({ message: "Product name is required" });
-        if (!description) return res.status(400).send({ message: "Product description is required" });
-        if (!price) return res.status(400).send({ message: "Product price is required" });
-        if (!category) return res.status(400).send({ message: "Product category is required" });
-        if (!quantity) return res.status(400).send({ message: "Product quantity is required" });
-        if (image && image.size > 1000000) return res.status(400).send({ message: "Product image size should be less than 1 MB" });
-
+        switch (true) {
+            case !name:
+                return res.status(400).send({ message: "Product name is required" });
+            case !description:
+                return res.status(400).send({ message: "Product description is required" });
+            case !price:
+                return res.status(400).send({ message: "Product price is required" });
+            case !category:
+                return res.status(400).send({ message: "Product category is required" });
+            case !quantity:
+                return res.status(400).send({ message: "Product quantity is required" });
+            case image && image.size > 1000000:
+                return res.status(400).send({ message: "Product image size should be less than 1 MB" });
+            default:
+                break;
+        }
 
         // update product
         const product = await productModel.findByIdAndUpdate(id,{...req.fields,slug:slugify(name)},{new:true})
