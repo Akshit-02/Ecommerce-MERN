@@ -4,7 +4,7 @@ import morgan from "morgan"
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js"
 import categoryRoutes from "./routes/categoryRoutes.js"
-
+import productRoutes from "./routes/productRoutes.js"
 // config env
 dotenv.config();
 
@@ -26,6 +26,7 @@ app.get("/",(req,res)=>{
 //routes
 app.use("/api/auth",authRoutes)
 app.use("/api/category",categoryRoutes)
+app.use("/api/product",productRoutes)
 
 const PORT=process.env.PORT || 8080;
 
