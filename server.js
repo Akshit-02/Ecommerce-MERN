@@ -2,6 +2,7 @@ import express from "express"
 import dotenv from "dotenv"
 import morgan from "morgan"
 import connectDB from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js"
 
 // config env
 dotenv.config();
@@ -20,6 +21,9 @@ app.use(morgan("dev"))
 app.get("/",(req,res)=>{
     res.send("<h1>Welcome to ecommerce app");
 });
+
+//routes
+app.use("/api/auth",authRoutes)
 
 const PORT=process.env.PORT || 8080;
 
