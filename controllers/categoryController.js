@@ -36,3 +36,41 @@ export const createCategoryController=async(req,res)=>{
     }
 
 }
+
+export const updateCategoryController=async(req,res)=>{
+    try{
+        const {name}=req.body;
+        const {id}=req.params;
+
+         // Validation
+         if (!name) {
+            return res.status(400).send({
+                success: false,
+                message: "Category name is required",
+            });
+        }
+
+        // Update category
+        const category=await categoryModel.findByIdAndUpdate(id,{name,slug:slugify(name)},{new:true})
+        if (!category) {
+            return res.status(404).send({
+                success: false,
+                message: "Category not found",
+            });
+        }
+        // Success response
+        res.status(200).send({
+            success:true,
+            message:"Category updated successfully",
+            category
+        })
+
+    }catch(error){
+        console.log(error)
+        res.status(500).send({
+            success:false,
+            message:"Error in update category",
+            error
+        })
+    }
+}

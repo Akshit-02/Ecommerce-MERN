@@ -9,5 +9,7 @@ const router =express.Router()
 //create category
 router.post('/create-category',requiredSignIn,isAdmin,createCategoryController);
 
+//update category
+router.post('/update-category/:id',requiredSignIn,isAdmin,updateCategoryController);
 
 export default router
