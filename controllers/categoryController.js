@@ -74,3 +74,22 @@ export const updateCategoryController=async(req,res)=>{
         })
     }
 }
+
+export const categoryController=async(req,res)=>{
+    try{
+        const categories=await categoryModel.find({})
+        res.status(200).send({
+            success:true,
+            message:"All categories list",
+            categories
+        })
+    }catch(error){
+        console.log(error)
+        res.status(500).send({
+            success:false,
+            message:"Error in listing all categories",
+            error
+        })
+    }
+
+}
