@@ -122,3 +122,36 @@ export const getSingleCategoryController=async(req,res)=>{
         })
     }
 }
+
+export const deleteCategoryController=async(req,res)=>{
+    try{
+        const {id}=req.params;
+
+        // Check if category exists before deleting
+        const category = await categoryModel.findById(id);
+        if (!category) {
+            return res.status(404).send({
+                success: false,
+                message: "Category not found",
+            });
+        }
+ 
+        // Delete category
+        await categoryModel.findByIdAndDelete(id);
+
+        // Success response
+        res.status(200).send({
+            success:true,
+            message:"Category deleted successfully"
+        })
+
+    }catch(error){
+        console.log(error)
+        res.status(500).send({
+            success: false,
+            message: "Error in deleting category",
+            error
+        })
+    }
+
+}
