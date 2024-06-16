@@ -23,4 +23,9 @@ router.post('/test',requiredSignIn,isAdmin,testController);
 router.post('/user-auth',requiredSignIn,(req,res)=>{
     res.status(200).send({ok:true});
 })
+
+router.post('/admin-auth',requiredSignIn,isAdmin,(req,res)=>{
+    res.status(200).send({ok:true});
+})
+
 export default router
