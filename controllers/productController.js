@@ -115,3 +115,35 @@ export const productImageController=async(req,res)=>{
     }
 
 }
+
+export const deleteProductController=async(req,res)=>{
+    try{
+        const {id}=req.params;
+
+        // Check if product exists before deleting
+        const product = await productModel.findById(id);
+        if (!product) {
+            return res.status(404).send({
+                success: false,
+                message: "Product not found",
+            });
+        }
+ 
+        // Delete product
+        await productModel.findByIdAndDelete(id);
+
+        // Success response
+        res.status(200).send({
+            success:true,
+            message:"Product deleted successfully"
+        })
+
+    }catch(error){
+        console.log(error)
+        res.status(500).send({
+            success:false,
+            message:"Error in deleting products",
+            error
+        })
+    }
+}
