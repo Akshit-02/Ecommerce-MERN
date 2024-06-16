@@ -75,7 +75,7 @@ export const updateCategoryController=async(req,res)=>{
     }
 }
 
-export const categoryController=async(req,res)=>{
+export const listCategoryController=async(req,res)=>{
     try{
         const categories=await categoryModel.find({})
         res.status(200).send({
