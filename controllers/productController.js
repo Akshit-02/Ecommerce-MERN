@@ -36,7 +36,7 @@ export const createProductController = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Error in creating product:", error);
+        console.error(error);
         res.status(500).send({
             success: false,
             message: "Error in creating product",
@@ -44,3 +44,23 @@ export const createProductController = async (req, res) => {
         });
     }
 };
+
+export const listProductController=async(req,res)=>{
+    try{
+        const products = await productModel.find({}).select('-image').limit(10).sort({ createdAt: -1 });
+        res.status(200).send({
+            success:true,
+            message:"All products",
+            count: products.length,
+            products,
+        })
+
+    }catch (error) {
+        console.error(error);
+        res.status(500).send({
+            success: false,
+            message: "Error in listing product",
+            error: error
+        });
+    }
+}
