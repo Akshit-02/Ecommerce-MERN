@@ -91,5 +91,34 @@ export const categoryController=async(req,res)=>{
             error
         })
     }
+}
 
+export const getSingleCategoryController=async(req,res)=>{
+    try{
+        const {slug}=req.params;
+
+        // Find the category by slug
+        const category=await categoryModel.findOne({slug})
+
+        if (!category) {
+            return res.status(404).send({
+                success: false,
+                message: "Category not found",
+            });
+        }
+        
+        // Success response
+        res.status(200).send({
+            success:true,
+            message:"Single Category Details",
+            category
+        })
+    }catch(error){
+        console.log(error)
+        res.status(500).send({
+            success:false,
+            message:"Error in getting single category details",
+            error
+        })
+    }
 }
